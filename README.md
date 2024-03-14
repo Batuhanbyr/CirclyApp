@@ -1,2 +1,2 @@
 # CirclyApp
- Revolutionizing Real-Time Connections
+> Circly is an innovative social networking platform designed to transform how individuals connect and interact in real-time environments. By leveraging location-based technology, Circly allows users to discover and engage with people in their immediate vicinity, be it at conferences, social gatherings, or daily commutes. Whether you're looking to network professionally or simply make new friends, Circly provides a seamless, intuitive interface to foster meaningful connections.
