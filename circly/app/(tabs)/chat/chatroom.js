@@ -22,7 +22,8 @@ import {
     const [message, setMessage] = useState("");
     const params = useLocalSearchParams();
     const [messages, setMessages] = useState([]);
-    const socket = io("http://localhost:8000");
+    const socket = io("http://192.168.0.33:8000");
+
     socket.on("connect", () => {
       console.log("Connected to the Socket.IO server");
     });
@@ -32,6 +33,7 @@ import {
       //update the state to include new message
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
+
     const sendMessage = async (senderId, receiverId) => {
       socket.emit("sendMessage", { senderId, receiverId, message });
   
@@ -76,12 +78,13 @@ import {
         ),
       });
     }, []);
+
     const fetchMessages = async () => {
       try {
         const senderId = params?.senderId;
         const receiverId = params?.receiverId;
   
-        const response = await axios.get("http://localhost:3000/messages", {
+        const response = await axios.get("http://192.168.0.33:3000/messages", {
           params: { senderId, receiverId },
         });
   
@@ -90,13 +93,16 @@ import {
         console.log("Error fetching the messages", error);
       }
     };
+
     useEffect(() => {
       fetchMessages();
     }, []);
+
     const formatTime = (time) => {
       const options = { hour: "numeric", minute: "numeric" };
       return new Date(time).toLocaleString("en-US", options);
     };
+
     return (
       <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "white" }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

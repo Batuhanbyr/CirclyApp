@@ -21,7 +21,7 @@ import {
   
     const handleMatch = async (selectedUserId) => {
       try {
-        await axios.post("http://localhost:3000/create-match", {
+        await axios.post("http://192.168.0.33:3000/create-match", {
           currentUserId: userId,
           selectedUserId: selectedUserId,
         });
@@ -39,21 +39,21 @@ import {
           <View
             style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
           >
-            <Text style={{ textAlign: "center", fontFamily: "Optima" }}>
+            <Text style={{ textAlign: "center" }}>
               NearBy 🔥
             </Text>
           </View>
           <View
             style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
           >
-            <Text style={{ textAlign: "center", fontFamily: "Optima" }}>
+            <Text style={{ textAlign: "center" }}>
               Looking for 💓
             </Text>
           </View>
           <View
             style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
           >
-            <Text style={{ textAlign: "center", fontFamily: "Optima" }}>
+            <Text style={{ textAlign: "center" }}>
               Turn-Ons 💌
             </Text>
           </View>
@@ -80,7 +80,6 @@ import {
                           marginTop: 15,
                           fontSize: 18,
                           lineHeight: 24,
-                          fontFamily: "Optima",
                           marginBottom: 8,
                         }}
                       >
@@ -174,7 +173,6 @@ import {
                             textAlign: "center",
                             color: "white",
                             fontWeight: "500",
-                            fontFamily: "Optima",
                           }}
                         >
                           {item}
@@ -207,7 +205,6 @@ import {
                             textAlign: "center",
                             color: "white",
                             fontWeight: "500",
-                            fontFamily: "Optima",
                           }}
                         >
                           {item}
@@ -239,7 +236,6 @@ import {
               <Text
                 style={{
                   fontSize: 15,
-                  fontFamily: "Georgia-Bold",
                   textAlign: "center",
                 }}
               >
@@ -247,7 +243,6 @@ import {
                 <Text
                   style={{
                     fontSize: 15,
-                    fontFamily: "Georgia-Bold",
                     color: "#FF69B4",
                   }}
                 >

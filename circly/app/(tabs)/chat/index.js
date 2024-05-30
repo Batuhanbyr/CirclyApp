@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import "core-js/stable/atob";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRouter } from "expo-router";
@@ -29,7 +29,7 @@ const index = () => {
   const fetchRecievedLikesDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/received-likes/${userId}/details`
+        `http://192.168.0.33:3000/received-likes/${userId}/details`
       );
 
       console.log(response);
@@ -44,7 +44,7 @@ const index = () => {
   const fetchUserMatches = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/users/${userId}/matches`
+        `http://192.168.0.33:3000/users/${userId}/matches`
       );
 
       const userMatches = response.data.matches;

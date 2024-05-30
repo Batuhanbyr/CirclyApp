@@ -1,15 +1,21 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, StyleSheet, Pressable, Alert, FlatList } from 'react-native';
+import { useFonts, Roboto_400Regular, Roboto_700Bold, Roboto_900Black } from '@expo-google-fonts/roboto';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import "core-js/stable/atob";
-import { jwtDecode } from "jwt-decode";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import Profile from "../../../components/Profile";
 
 const index = () => {
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState();
   const [profiles, setProfiles] = useState([]);
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = await AsyncStorage.getItem("auth");
@@ -20,9 +26,10 @@ const index = () => {
 
     fetchUser();
   }, []);
+
   const fetchUserDescription = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/users/${userId}`);
+      const response = await axios.get(`http://192.168.0.33:3000/users/${userId}`);
       console.log(response);
       const user = response.data;
       setUser(user?.user);
@@ -33,7 +40,7 @@ const index = () => {
 
   const fetchProfiles = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/profiles", {
+      const response = await axios.get("http://192.168.0.33:3000/profiles", {
         params: {
           userId: userId,
           gender: user?.gender,
@@ -47,17 +54,22 @@ const index = () => {
       console.log("error", error);
     }
   };
+
+
   useEffect(() => {
     if (userId) {
       fetchUserDescription();
     }
   }, [userId]);
+
   useEffect(() => {
     if (userId && user) {
       fetchProfiles();
     }
   }, [userId, user]);
+
   console.log("profiles", profiles);
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -74,9 +86,9 @@ const index = () => {
         )}
       />
     </View>
-  );
-};
+  )
+}
 
-export default index;
+export default index
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})
