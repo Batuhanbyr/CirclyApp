@@ -1,265 +1,268 @@
 import {
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    Image,
-    Pressable,
-  } from "react-native";
-  import React from "react";
-  import { useLocalSearchParams, useRouter } from "expo-router";
-  import { AntDesign } from "@expo/vector-icons";
-  import { FontAwesome, Entypo } from "@expo/vector-icons";
-  import axios from "axios";
-  
-  const select = () => {
-    const router = useRouter();
-    const params = useLocalSearchParams();
-    const profiles = JSON.parse(params?.profiles);
-  
-    const userId = params?.userId;
-  
-    const handleMatch = async (selectedUserId) => {
-      try {
-        await axios.post("http://192.168.0.33:3000/create-match", {
-          currentUserId: userId,
-          selectedUserId: selectedUserId,
-        });
-  
-        setTimeout(() => {
-          router.push("/chat");
-        }, 500);
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-    return (
-      <ScrollView style={{ backgroundColor: "white", flex: 1, padding: 10 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
-          <View
-            style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
-          >
-            <Text style={{ textAlign: "center" }}>
-              NearBy 🔥
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  Pressable,
+} from "react-native";
+import React from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome, Entypo } from "@expo/vector-icons";
+import axios from "axios";
+
+const select = () => {
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const profiles = JSON.parse(params?.profiles);
+
+  const userId = params?.userId;
+
+  const handleMatch = async (selectedUserId) => {
+    try {
+      await axios.post("http://192.168.0.33:3000/create-match", {
+        currentUserId: userId,
+        selectedUserId: selectedUserId,
+      });
+
+      setTimeout(() => {
+        router.push("/chat");
+      }, 500);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  return (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerItem}>
+          <Text style={styles.headerText}>Nearby</Text>
+        </View>
+        <View style={styles.headerItem}>
+          <Text style={styles.headerText}>Looking for</Text>
+        </View>
+        <View style={styles.headerItem}>
+          <Text style={styles.headerText}>Interests</Text>
+        </View>
+      </View>
+      {profiles?.length > 0 ? (
+        <View style={styles.profilesContainer}>
+          {profiles?.map((item, index) => (
+            <View style={styles.profileCard} key={index}>
+              <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                <View style={styles.profileContent}>
+                  <View style={styles.profileInfo}>
+                    <Text style={styles.profileName}>{item?.name}</Text>
+                    <Text style={styles.profileDescription}>
+                      {item?.description?.length > 160
+                        ? item?.description
+                        : item?.description.substr(0, 160)}
+                    </Text>
+                  </View>
+                  {item?.profileImages?.slice(0, 1).map((image, idx) => (
+                    <Image
+                      key={idx}
+                      style={styles.profileImage}
+                      source={{ uri: image }}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+
+              <View style={styles.actionsContainer}>
+                <Entypo name="dots-three-vertical" size={26} color="black" />
+                <View style={styles.actions}>
+                  <Pressable style={styles.actionButton}>
+                    <FontAwesome name="diamond" size={27} color="#000" />
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => handleMatch(item._id)}
+                    style={styles.actionButton}
+                  >
+                    <AntDesign name="hearto" size={27} color="#000" />
+                  </Pressable>
+                </View>
+              </View>
+
+              <View style={styles.turnOnsContainer}>
+                <Text style={styles.sectionTitle}>Interests</Text>
+                <View style={styles.tagsContainer}>
+                  {item?.turnOns?.map((turnOn, idx) => (
+                    <View style={styles.tag} key={idx}>
+                      <Text style={styles.tagText}>{turnOn}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.lookingForContainer}>
+                <Text style={styles.sectionTitle}>Goals</Text>
+                <View style={styles.tagsContainer}>
+                  {item?.lookingFor?.map((looking, idx) => (
+                    <View style={styles.tag} key={idx}>
+                      <Text style={styles.tagText}>{looking}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+      ) : (
+        <View style={styles.noFriendsContainer}>
+          <Image
+            style={styles.noFriendsImage}
+            source={{
+              uri: "https://img.icons8.com/?size=100&id=78144&format=png&color=000000",
+            }}
+          />
+          <View>
+            <Text style={styles.noFriendsText}>
+             {" "}
+              <Text style={styles.noFriendsHighlightText}>No friends yet</Text>
             </Text>
-          </View>
-          <View
-            style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
-          >
-            <Text style={{ textAlign: "center" }}>
-              Looking for 💓
-            </Text>
-          </View>
-          <View
-            style={{ backgroundColor: "#F0F0F0", padding: 10, borderRadius: 18 }}
-          >
-            <Text style={{ textAlign: "center" }}>
-              Turn-Ons 💌
+            <Text style={styles.improveInfoText}>
+              Improve your profile information to connect with others
             </Text>
           </View>
         </View>
-        {profiles?.length > 0 ? (
-          <View style={{ marginTop: 20 }}>
-            {profiles?.map((item, index) => (
-              <View style={{ marginVertical: 15 }}>
-                <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 50,
-                    }}
-                  >
-                    <View>
-                      <Text style={{ fontSize: 17, fontWeight: "600" }}>
-                        {item?.name}
-                      </Text>
-                      <Text
-                        style={{
-                          width: 200,
-                          marginTop: 15,
-                          fontSize: 18,
-                          lineHeight: 24,
-                          marginBottom: 8,
-                        }}
-                      >
-                        {item?.description?.length > 160
-                          ? item?.description
-                          : item?.description.substr(0, 160)}
-                      </Text>
-                    </View>
-  
-                    {item?.profileImages?.slice(0, 1).map((item, index) => (
-                      <Image
-                        style={{
-                          width: 280,
-                          height: 280,
-                          resizeMode: "cover",
-                          borderRadius: 5,
-                        }}
-                        source={{ uri: item }}
-                      />
-                    ))}
-                  </View>
-                </ScrollView>
-  
-                <View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginTop: 12,
-                    }}
-                  >
-                    <Entypo name="dots-three-vertical" size={26} color="black" />
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 20,
-                      }}
-                    >
-                      <Pressable
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          backgroundColor: "#E0E0E0",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <FontAwesome name="diamond" size={27} color="#DE3163" />
-                      </Pressable>
-  
-                      <Pressable
-                        onPress={() => handleMatch(item._id)}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          backgroundColor: "#E0E0E0",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <AntDesign name="hearto" size={27} color="#FF033E" />
-                      </Pressable>
-                    </View>
-                  </View>
-                </View>
-  
-                <View>
-                  <Text>Turn Ons 💓</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 10,
-                      marginTop: 10,
-                    }}
-                  >
-                    {item?.turnOns?.map((item, index) => (
-                      <View
-                        style={{
-                          backgroundColor: "#DE3163",
-                          padding: 10,
-                          borderRadius: 22,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            color: "white",
-                            fontWeight: "500",
-                          }}
-                        >
-                          {item}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-  
-                <View style={{ marginTop: 12 }}>
-                  <Text>Looking For 👀</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 10,
-                      marginTop: 10,
-                    }}
-                  >
-                    {item?.lookingFor?.map((item, index) => (
-                      <View
-                        style={{
-                          backgroundColor: "#FBCEB1",
-                          padding: 10,
-                          borderRadius: 22,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            color: "white",
-                            fontWeight: "500",
-                          }}
-                        >
-                          {item}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-              </View>
-            ))}
-          </View>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 100,
-            }}
-          >
-            <Image
-              style={{ width: 100, height: 100 }}
-              source={{
-                uri: "https://cdn-icons-png.flaticon.com/128/1642/1642611.png",
-              }}
-            />
-  
-            <View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  textAlign: "center",
-                }}
-              >
-                UH - OH{" "}
-                <Text
-                  style={{
-                    fontSize: 15,
-                    color: "#FF69B4",
-                  }}
-                >
-                  No likes yet
-                </Text>
-              </Text>
-  
-              <Text style={{ marginTop: 10, fontSize: 16, fontWeight: "600" }}>
-                Improve your AD to get better likes
-              </Text>
-            </View>
-          </View>
-        )}
-      </ScrollView>
-    );
-  };
-  
-  export default select;
-  
-  const styles = StyleSheet.create({});
+      )}
+    </ScrollView>
+  );
+};
+
+export default select;
+
+const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: '#f5f5f5',
+    flex: 1,
+    padding: 10,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  headerItem: {
+    backgroundColor: '#dcdcdc',
+    padding: 10,
+    borderRadius: 18,
+  },
+  headerText: {
+    textAlign: 'center',
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  profilesContainer: {
+    marginTop: 20,
+  },
+  profileCard: {
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  profileContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  profileInfo: {
+    width: '50%',
+  },
+  profileName: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#000',
+  },
+  profileDescription: {
+    marginTop: 10,
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#666',
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    resizeMode: 'cover',
+    borderRadius: 10,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+  },
+  actionButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#dcdcdc',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  turnOnsContainer: {
+    marginTop: 12,
+  },
+  lookingForContainer: {
+    marginTop: 12,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    marginBottom: 10,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  tag: {
+    backgroundColor: '#000',
+    padding: 10,
+    borderRadius: 20,
+  },
+  tagText: {
+    color: '#fff',
+    fontWeight: '500',
+  },
+  noFriendsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100,
+  },
+  noFriendsImage: {
+    width: 100,
+    height: 100,
+  },
+  noFriendsText: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  noFriendsHighlightText: {
+    color: '#0000FF',
+  },
+  improveInfoText: {
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+});

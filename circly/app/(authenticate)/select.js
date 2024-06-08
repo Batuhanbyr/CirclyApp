@@ -84,7 +84,7 @@ const Select = () => {
         <Image
           style={{ width: 50, height: 50 }}
           source={{
-            uri: 'https://cdn-icons-png.flaticon.com/128/12442/12442425.png',
+            uri: 'https://img.icons8.com/?size=100&id=7702&format=png&color=000000',
           }}
         />
       </Pressable>
@@ -106,7 +106,7 @@ const Select = () => {
         <Image
           style={{ width: 50, height: 50 }}
           source={{
-            uri: 'https://cdn-icons-png.flaticon.com/128/9844/9844179.png',
+            uri: 'https://img.icons8.com/?size=100&id=7696&format=png&color=000000',
           }}
         />
       </Pressable>
@@ -128,7 +128,7 @@ const Select = () => {
         <Image
           style={{ width: 50, height: 50 }}
           source={{
-            uri: 'https://cdn-icons-png.flaticon.com/128/12442/12442425.png',
+            uri: 'https://img.icons8.com/?size=100&id=ZdUN3j3NnuUW&format=png&color=000000',
           }}
         />
       </Pressable>
